@@ -31,6 +31,7 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -362,5 +363,32 @@ public class ConfigurationTest {
     PollingWatchService pollingWatchService = (PollingWatchService) watchService;
     assertThat(pollingWatchService.interval).isEqualTo(10);
     assertThat(pollingWatchService.timeUnit).isEqualTo(MILLISECONDS);
+  }
+
+  @Test
+  public void testPartitionedConfig() throws IOException {
+    Configuration[] raws = new Configuration[] {
+      Configuration.unix(),
+      Configuration.windows()
+    };
+    Integer[] maxCacheSizes = new Integer[] {0, 10, 1024};
+
+    for (Configuration raw: raws) {
+      for (Integer maxCacheSize: maxCacheSizes) {
+        Configuration config = raw.toBuilder().setMaxCacheSize(maxCacheSize).build();
+        FileSystem fs = Jimfs.newFileSystem(config);
+        
+        Path path = Files.createFile(fs.getPath("test"));
+        Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
+        String s = Files.readString(path, StandardCharsets.UTF_8);
+        assertThat(s.trim()).isEqualTo("hello, world!");
+
+        assertThat(Files.list(fs.getPath("")).count()).isEqualTo(1);
+        Path retrievedPath = Files.list(fs.getPath("")).findFirst().get();
+        assertThat(retrievedPath.toString()).isEqualTo("test");
+
+        assertThat(Files.getAttribute(retrievedPath, "size")).isEqualTo(15);
+      }
+    }
   }
 }
