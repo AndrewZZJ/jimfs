@@ -446,6 +446,13 @@ public class ConfigurationTest {
 		Configuration config2 = Configuration.windows();
 		config2 = config.toBuilder().setBlockSize(Integer.MAX_VALUE).build();
 		
+//		FileSystem fs = Jimfs.newFileSystem(config);   				//Just as I thought, out of memory exception
+//        
+//        	Path path = Files.createFile(fs.getPath("test"));
+//        	Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
+//        	String s = Files.readString(path, StandardCharsets.UTF_8);
+//        	assertThat(s.trim()).isEqualTo("hello, world!");
+		
 		assertThat(config.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config1.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config2.blockSize).isEqualTo(Integer.MAX_VALUE);
