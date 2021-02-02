@@ -438,7 +438,7 @@ public class ConfigurationTest {
 		  assertThat(config2.workingDirectory).isEqualTo("/test\\nope*");
 	}
 	@Test
-	public void testBlockSize() {
+	public void testBlockSize() throws IOException{
 		Configuration config = Configuration.unix();
 		config = config.toBuilder().setBlockSize(Integer.MAX_VALUE).build();
 		Configuration config1 = Configuration.osX();
@@ -448,11 +448,12 @@ public class ConfigurationTest {
 		
 //		FileSystem fs = Jimfs.newFileSystem(config);   				//Just as I thought, out of memory exception
 //        
-//        	Path path = Files.createFile(fs.getPath("test"));
-//        	Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
-//        	String s = Files.readString(path, StandardCharsets.UTF_8);
-//        	assertThat(s.trim()).isEqualTo("hello, world!");
-		
+//        Path path = Files.createFile(fs.getPath("test"));
+//        Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
+//        String s = Files.readString(path, StandardCharsets.UTF_8);
+//        assertThat(s.trim()).isEqualTo("hello, world!");
+        
+        
 		assertThat(config.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config1.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config2.blockSize).isEqualTo(Integer.MAX_VALUE);
@@ -466,7 +467,7 @@ public class ConfigurationTest {
 		assertThat(config2.blockSize).isEqualTo(1);
 	}
 	@Test
-	public void testMaxSize() {
+	public void testMaxSize() throws IOException{
 		Configuration config = Configuration.unix();
 		config = config.toBuilder().setMaxSize(Integer.MAX_VALUE).build();
 		Configuration config1 = Configuration.osX();
@@ -481,6 +482,13 @@ public class ConfigurationTest {
 		config = config.toBuilder().setMaxSize(1).build();
 		config1 = config.toBuilder().setMaxSize(1).build();
 		config2 = config.toBuilder().setMaxSize(1).build();
+		
+//		FileSystem fs = Jimfs.newFileSystem(config);   				//Just as I thought, no disk space
+//      
+//		Path path = Files.createFile(fs.getPath("test"));
+//		Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
+//		String s = Files.readString(path, StandardCharsets.UTF_8);
+//		assertThat(s.trim()).isEqualTo("hello, world!");
 		
 		assertThat(config.maxSize).isEqualTo(1);
 		assertThat(config1.maxSize).isEqualTo(1);
