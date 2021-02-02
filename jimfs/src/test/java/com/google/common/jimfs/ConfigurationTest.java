@@ -387,8 +387,80 @@ public class ConfigurationTest {
         Path retrievedPath = Files.list(fs.getPath("")).findFirst().get();
         assertThat(retrievedPath.toString()).isEqualTo("test");
 
-        assertThat(Files.getAttribute(retrievedPath, "size")).isEqualTo(15);
+        assertThat(Files.getAttribute(retrievedPath, "size")).isEqualTo(14);
       }
     }
   }
+	@Test
+	public void testUNIXRoots() {
+		  Configuration config = Configuration.unix();
+		  config = config.toBuilder().setRoots("/").build();
+		  assertThat(config.roots).containsExactly("/");
+	}
+	@Test
+	public void testOSXRoots() {
+		  Configuration config = Configuration.osX();
+		  config = config.toBuilder().setRoots("/").build();
+		  assertThat(config.roots).containsExactly("/");
+	}
+	@Test
+	public void testWindowsRoots() {
+		  Configuration config = Configuration.windows();
+		  config = config.toBuilder().setRoots("D:/").build(); // like I said, it can be / or \\
+		  assertThat(config.roots).containsExactly("D:/");
+		  config = config.toBuilder().setRoots("D:\\").build();
+		  assertThat(config.roots).containsExactly("D:\\");
+	}
+	@Test
+	public void testWorkingDirectory() {
+		  Configuration config = Configuration.unix();
+		  config = config.toBuilder().setWorkingDirectory("/work").build();
+		  Configuration config1 = Configuration.osX();
+		  config1 = config.toBuilder().setWorkingDirectory("/work/test/yes/no").build(); //turn out \\ is allowed
+		  Configuration config2 = Configuration.windows();
+		  config2 = config.toBuilder().setWorkingDirectory("/test").build();
+		  
+//		  config = config.toBuilder().setWorkingDirectory("\\").build();          //Can't be tested, throws errors
+//		  config1 = config.toBuilder().setWorkingDirectory("*").build();
+//		  config2 = config.toBuilder().setWorkingDirectory("C:\test").build();
+		  
+		  
+		  assertThat(config.workingDirectory).isEqualTo("/work");
+		  assertThat(config1.workingDirectory).isEqualTo("/work/test/yes/no");
+		  assertThat(config2.workingDirectory).isEqualTo("/test");
+		  
+		  config = config.toBuilder().setWorkingDirectory("/work\\.txt").build();
+		  config1 = config.toBuilder().setWorkingDirectory("/work/test/yes/no\\yes").build();
+		  config2 = config.toBuilder().setWorkingDirectory("/test\\nope*").build();
+		  
+		  assertThat(config.workingDirectory).isEqualTo("/work\\.txt");
+		  assertThat(config1.workingDirectory).isEqualTo("/work/test/yes/no\\yes");
+		  assertThat(config2.workingDirectory).isEqualTo("/test\\nope*");
+	}
+	@Test
+	public void testBlockSize() {
+		Configuration config = Configuration.unix();
+		config = config.toBuilder().setBlockSize(Integer.MAX_VALUE).build();
+		Configuration config1 = Configuration.osX();
+		config1 = config.toBuilder().setBlockSize(Integer.MAX_VALUE).build();
+		Configuration config2 = Configuration.windows();
+		config2 = config.toBuilder().setBlockSize(Integer.MAX_VALUE).build();
+		
+		assertThat(config.blockSize).isEqualTo(Integer.MAX_VALUE);
+		assertThat(config1.blockSize).isEqualTo(Integer.MAX_VALUE);
+		assertThat(config2.blockSize).isEqualTo(Integer.MAX_VALUE);
+	}
+	@Test
+	public void testMaxSize() {
+		Configuration config = Configuration.unix();
+		config = config.toBuilder().setMaxSize(Integer.MAX_VALUE).build();
+		Configuration config1 = Configuration.osX();
+		config1 = config.toBuilder().setMaxSize(Integer.MAX_VALUE).build();
+		Configuration config2 = Configuration.windows();
+		config2 = config.toBuilder().setMaxSize(Integer.MAX_VALUE).build();
+		
+		assertThat(config.maxSize).isEqualTo(Integer.MAX_VALUE);
+		assertThat(config1.maxSize).isEqualTo(Integer.MAX_VALUE);
+		assertThat(config2.maxSize).isEqualTo(Integer.MAX_VALUE);
+	}
 }
