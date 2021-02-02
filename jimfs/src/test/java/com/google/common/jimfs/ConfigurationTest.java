@@ -449,6 +449,14 @@ public class ConfigurationTest {
 		assertThat(config.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config1.blockSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config2.blockSize).isEqualTo(Integer.MAX_VALUE);
+		
+		config = config.toBuilder().setBlockSize(1).build();
+		config1 = config.toBuilder().setBlockSize(1).build();
+		config2 = config.toBuilder().setBlockSize(1).build();
+		
+		assertThat(config.blockSize).isEqualTo(1);
+		assertThat(config1.blockSize).isEqualTo(1);
+		assertThat(config2.blockSize).isEqualTo(1);
 	}
 	@Test
 	public void testMaxSize() {
@@ -462,5 +470,13 @@ public class ConfigurationTest {
 		assertThat(config.maxSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config1.maxSize).isEqualTo(Integer.MAX_VALUE);
 		assertThat(config2.maxSize).isEqualTo(Integer.MAX_VALUE);
+		
+		config = config.toBuilder().setMaxSize(1).build();
+		config1 = config.toBuilder().setMaxSize(1).build();
+		config2 = config.toBuilder().setMaxSize(1).build();
+		
+		assertThat(config.maxSize).isEqualTo(1);
+		assertThat(config1.maxSize).isEqualTo(1);
+		assertThat(config2.maxSize).isEqualTo(1);
 	}
 }
