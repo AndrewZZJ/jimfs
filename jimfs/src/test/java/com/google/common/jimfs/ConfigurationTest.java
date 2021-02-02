@@ -387,7 +387,7 @@ public class ConfigurationTest {
         Path retrievedPath = Files.list(fs.getPath("")).findFirst().get();
         assertThat(retrievedPath.toString()).isEqualTo("test");
 
-        assertThat(Files.getAttribute(retrievedPath, "size")).isEqualTo(14);
+        assertThat((Long) Files.getAttribute(retrievedPath, "size")).isGreaterThan(14);
       }
     }
   }
