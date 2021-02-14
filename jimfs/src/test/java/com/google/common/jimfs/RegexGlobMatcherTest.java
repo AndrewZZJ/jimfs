@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link PathMatcher} instances created by {@link GlobToRegex}.
@@ -97,5 +98,37 @@ public class RegexGlobMatcherTest extends AbstractGlobMatcherTest {
   private static void assertGlobRegexIs(String glob, String regex, String separators) {
     assertEquals(regex, GlobToRegex.toRegex(glob, separators));
     Pattern.compile(regex); // ensure the regex syntax is valid
+  }
+
+  @Test
+  public void testByFiniteStateMachine() {
+    assertPass("a[]", false);
+    assertPass("[", false);
+    assertPass("[ab", false);
+    assertPass("[a]*a", true);
+    assertPass("*", true);
+    assertPass("\\", false);
+    assertPass("{a*a}", true);
+    assertPass("{a*", true);
+    assertPass("{\\a}", true);
+    assertPass("{\\", false);
+    assertPass("{[]", false);
+    assertPass("{[", false);
+    assertPass("{", false);
+    assertPass("{[ab]}", true);
+    assertPass("{[a", false);
+  }
+
+  private static void assertPass(String glob, boolean shouldPass) {
+    try {
+      GlobToRegex.toRegex(glob, "/");
+      if (!shouldPass) {
+        fail();
+      }
+    } catch (Exception ex) {
+      if (shouldPass) {
+        fail();
+      }
+    }
   }
 }
