@@ -38,6 +38,7 @@ import java.util.Random;
 import java.util.Set;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.Ignore;
 
 /**
  * Tests for {@link RegularFile} and by extension for {@link HeapDisk}. These tests test files
@@ -169,6 +170,7 @@ public class RegularFileTest {
   }
 
   /** Actual test cases for testing RegularFiles. */
+  @Ignore
   public static class RegularFileTestRunner extends TestCase {
 
     private final TestConfiguration configuration;

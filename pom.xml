@@ -224,11 +224,6 @@
               <version>${errorprone.version}</version>
             </path>
             <path>
-              <groupId>com.google.guava</groupId>
-              <artifactId>guava-beta-checker</artifactId>
-              <version>1.0</version>
-            </path>
-            <path>
               <groupId>com.google.auto.service</groupId>
               <artifactId>auto-service</artifactId>
               <version>${auto-service.version}</version>
@@ -245,7 +240,7 @@
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -Xep:BetaApi:OFF</arg> <!-- Disable Beta Checker for tests -->
+                <arg>-Xplugin:ErrorProne</arg> <!-- Disable Beta Checker for tests -->
               </compilerArgs>
             </configuration>
           </execution>

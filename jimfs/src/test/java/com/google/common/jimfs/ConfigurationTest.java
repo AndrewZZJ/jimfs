@@ -380,7 +380,8 @@ public class ConfigurationTest {
         
         Path path = Files.createFile(fs.getPath("test"));
         Files.write(path, ImmutableList.of("hello, world!"), StandardCharsets.UTF_8);
-        String s = Files.readString(path, StandardCharsets.UTF_8);
+        byte[] bytes = Files.readAllBytes(path);
+        String s = new String(bytes);
         assertThat(s.trim()).isEqualTo("hello, world!");
 
         assertThat(Files.list(fs.getPath("")).count()).isEqualTo(1);
@@ -494,4 +495,51 @@ public class ConfigurationTest {
 		assertThat(config1.maxSize).isEqualTo(1);
 		assertThat(config2.maxSize).isEqualTo(1);
 	}
+
+
+	@Test
+    public void testToString() {
+      Configuration config = Configuration.unix();
+      assertThat(config.toString()).isEqualTo("Configuration{Unix}");
+
+      Configuration.Builder b = Configuration.builder(PathType.unix());
+      String expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.setBlockSize(2);
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=2, maxSize=4294967296}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.setNameDisplayNormalization(NFC);
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, nameDisplayNormalization=[NFC], pathEqualityUsesCanonicalForm=false, blockSize=2, maxSize=4294967296}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.setNameCanonicalNormalization(NFC);
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, nameDisplayNormalization=[NFC], nameCanonicalNormalization=[NFC], pathEqualityUsesCanonicalForm=false, blockSize=2, maxSize=4294967296}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.setMaxCacheSize(1024);
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, nameDisplayNormalization=[NFC], nameCanonicalNormalization=[NFC], pathEqualityUsesCanonicalForm=false, blockSize=2, maxSize=4294967296, maxCacheSize=1024}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.setAttributeViews("test");
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, nameDisplayNormalization=[NFC], nameCanonicalNormalization=[NFC], pathEqualityUsesCanonicalForm=false, blockSize=2, maxSize=4294967296, maxCacheSize=1024, attributeViews=[test]}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      // clear
+      b = Configuration.builder(PathType.unix());
+
+      b.setDefaultAttributeValue("hello:world", 123);
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296, defaultAttributeValues={hello:world=123}}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.addAttributeProvider(new AclAttributeProvider());
+      assertThat(b.build().toString()).contains("AclAttributeProvider");
+
+      // clear
+      b = Configuration.builder(PathType.unix());
+      b.setWatchServiceConfiguration(WatchServiceConfiguration.polling(10, SECONDS));
+      expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296, watchServiceConfig=WatchServiceConfiguration.polling(10, SECONDS)}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+    }
 }
