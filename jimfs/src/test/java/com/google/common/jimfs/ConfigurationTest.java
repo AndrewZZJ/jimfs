@@ -541,5 +541,23 @@ public class ConfigurationTest {
       b.setWatchServiceConfiguration(WatchServiceConfiguration.polling(10, SECONDS));
       expected = "Configuration{pathType=UnixPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296, watchServiceConfig=WatchServiceConfiguration.polling(10, SECONDS)}";
       assertThat(b.build().toString()).isEqualTo(expected);
+
+      // clear
+      b = Configuration.builder(PathType.windows());
+      b.setWatchServiceConfiguration(WatchServiceConfiguration.polling(10, SECONDS));
+      expected = "Configuration{pathType=WindowsPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296, watchServiceConfig=WatchServiceConfiguration.polling(10, SECONDS)}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      // clear
+      b = Configuration.builder(PathType.windows());
+      expected = "Configuration{pathType=WindowsPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+      b.setMaxCacheSize(1024);
+      expected = "Configuration{pathType=WindowsPathType, roots=[], supportedFeatures=[], workingDirectory=null, pathEqualityUsesCanonicalForm=false, blockSize=8192, maxSize=4294967296, maxCacheSize=1024}";
+      assertThat(b.build().toString()).isEqualTo(expected);
+
+      b.addAttributeProvider(new AclAttributeProvider());
+      assertThat(b.build().toString()).contains("AclAttributeProvider");
+
     }
 }
