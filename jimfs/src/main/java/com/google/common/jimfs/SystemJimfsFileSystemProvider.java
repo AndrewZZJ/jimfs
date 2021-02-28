@@ -198,7 +198,7 @@ public final class SystemJimfsFileSystemProvider extends FileSystemProvider {
       }
     };
   }
-
+  
   @Override
   public SeekableByteChannel newByteChannel(
       Path path, Set<? extends OpenOption> options, FileAttribute<?>... attrs) throws IOException {
@@ -273,5 +273,84 @@ public final class SystemJimfsFileSystemProvider extends FileSystemProvider {
   public void setAttribute(Path path, String attribute, Object value, LinkOption... options)
       throws IOException {
     throw new UnsupportedOperationException();
+  }
+  
+  
+  //DUMMY METHODS for potentially improved design for methods
+  
+  @Deprecated
+  public SeekableByteChannel DummynewByteChannel(
+      Path path, Set<? extends OpenOption> options, FileAttribute<?>... attrs) throws IOException {
+    return null;
+  }
+
+  @Deprecated
+  public DirectoryStream<Path> DummynewDirectoryStream(
+      Path dir, DirectoryStream.Filter<? super Path> filter) throws IOException {
+    return null;
+  }
+
+  @Deprecated
+  public void DummycreateDirectory(Path dir, FileAttribute<?>... attrs) throws IOException {
+    
+  }
+
+  @Deprecated
+  public void Dummydelete(Path path) throws IOException {
+    
+  }
+
+  @Deprecated
+  public void Dummycopy(Path source, Path target, CopyOption... options) throws IOException {
+    
+  }
+
+  @Deprecated
+  public void Dummymove(Path source, Path target, CopyOption... options) throws IOException {
+    
+  }
+
+  @Deprecated
+  public boolean DummyisSameFile(Path path, Path path2) throws IOException {
+	  throw new UnsupportedOperationException();
+  }
+
+  @Deprecated
+  public boolean DummyisHidden(Path path) throws IOException {
+	  throw new UnsupportedOperationException();
+  }
+
+  @Deprecated
+  public FileStore DummygetFileStore(Path path) throws IOException {
+    return null;
+  }
+
+  @Deprecated
+  public void DummycheckAccess(Path path, AccessMode... modes) throws IOException {
+    
+  }
+
+  @Deprecated
+  public <V extends FileAttributeView> V DummygetFileAttributeView(
+      Path path, Class<V> type, LinkOption... options) {
+    return null;
+  }
+
+  @Deprecated
+  public <A extends BasicFileAttributes> A DummyreadAttributes(
+      Path path, Class<A> type, LinkOption... options) throws IOException {
+	  return null;
+  }
+
+  @Deprecated
+  public Map<String, Object> DummyreadAttributes(Path path, String attributes, LinkOption... options)
+      throws IOException {
+	  return null;
+  }
+
+  @Deprecated
+  public void DummysetAttribute(Path path, String attribute, Object value, LinkOption... options)
+      throws IOException {
+
   }
 }
