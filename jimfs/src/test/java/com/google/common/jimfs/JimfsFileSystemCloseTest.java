@@ -445,16 +445,20 @@ public class JimfsFileSystemCloseTest {
 	  assertNull(a.DummynewDirectoryStream(file, null));
 	  assertNull(a.DummyreadAttributesA(file, null, null));
 	  assertNull(a.DummyreadAttributes(file, "test", null));
+	  boolean b = false;
+	  boolean c = false;
 	  try {
 		  a.DummyisHidden(file);
 	  }catch (UnsupportedOperationException e) {
-		  
+		  b = true;
 	  }
+	  assertTrue(b);
 	  try {
 		  a.DummyisSameFile(file, file);
 	  }catch (UnsupportedOperationException e) {
-		  
+		  c = true;
 	  }
+	  assertTrue(c);
 	  //Can't test void method without mocking
 //	  a.DummycheckAccess(file, null);
 //	  a.Dummycopy(file, null, null);
