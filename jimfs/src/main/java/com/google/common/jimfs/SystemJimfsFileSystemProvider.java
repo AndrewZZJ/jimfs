@@ -60,7 +60,7 @@ import java.util.concurrent.ConcurrentMap;
  * @since 1.1
  */
 @AutoService(FileSystemProvider.class)
-public final class SystemJimfsFileSystemProvider extends FileSystemProvider {
+public class SystemJimfsFileSystemProvider extends FileSystemProvider {
 
   /**
    * Env map key that maps to the already-created {@code FileSystem} instance in {@code

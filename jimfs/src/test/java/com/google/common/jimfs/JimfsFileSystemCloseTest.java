@@ -435,9 +435,12 @@ public class JimfsFileSystemCloseTest {
     } catch (ClosedFileSystemException expected) {
     }
   }
+  public class StubF extends SystemJimfsFileSystemProvider{
+	  
+  }
   @Test
   public void testDummyMethods() throws IOException{
-	  SystemJimfsFileSystemProvider a = new SystemJimfsFileSystemProvider();
+	  StubF a = new StubF();
 	  Path file = fs.getPath("/file");
 	  assertNull(a.DummygetFileAttributeView(file, null, null));
 	  assertNull(a.DummygetFileStore(file));
