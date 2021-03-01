@@ -337,7 +337,7 @@ public final class SystemJimfsFileSystemProvider extends FileSystemProvider {
   }
 
   @Deprecated
-  public <A extends BasicFileAttributes> A DummyreadAttributes(
+  public <A extends BasicFileAttributes> A DummyreadAttributesA(
       Path path, Class<A> type, LinkOption... options) throws IOException {
 	  return null;
   }
