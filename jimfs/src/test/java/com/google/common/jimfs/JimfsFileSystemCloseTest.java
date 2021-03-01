@@ -53,6 +53,7 @@ import java.nio.file.attribute.FileTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mockito;
 
 /**
  * Tests for what happens when a file system is closed.
@@ -469,5 +470,33 @@ public class JimfsFileSystemCloseTest {
 //	  a.Dummydelete(file);
 //	  a.Dummymove(file, null, null);
 //	  a.DummysetAttribute(file, "test", a, null);
+  }
+  @Test
+  public void testMock() throws IOException{
+	  SystemJimfsFileSystemProvider test = Mockito.mock(SystemJimfsFileSystemProvider.class);
+	  Path file = fs.getPath("/file");
+	  Mockito.doNothing().when(test).DummycheckAccess(file, null);
+	  test.DummycheckAccess(file, null);
+	  Mockito.verify(test, Mockito.times(1)).DummycheckAccess(file,null);
+	  
+	  Mockito.doNothing().when(test).Dummycopy(file, null, null);
+	  test.Dummycopy(file, null, null);
+	  Mockito.verify(test, Mockito.times(1)).Dummycopy(file, null, null);
+	  
+	  Mockito.doNothing().when(test).DummycreateDirectory(file, null);
+	  test.DummycreateDirectory(file, null);
+	  Mockito.verify(test, Mockito.times(1)).DummycreateDirectory(file, null);
+	  
+	  Mockito.doNothing().when(test).Dummydelete(file);
+	  test.Dummydelete(file);
+	  Mockito.verify(test, Mockito.times(1)).Dummydelete(file);
+	  
+	  Mockito.doNothing().when(test).Dummymove(file, null, null);
+	  test.Dummymove(file, null, null);
+	  Mockito.verify(test, Mockito.times(1)).Dummymove(file, null, null);
+	  
+	  Mockito.doNothing().when(test).DummysetAttribute(file, "test", null, null);
+	  test.DummysetAttribute(file, "test", null, null);
+	  Mockito.verify(test, Mockito.times(1)).DummysetAttribute(file, "test", null, null);
   }
 }
