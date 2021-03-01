@@ -435,4 +435,32 @@ public class JimfsFileSystemCloseTest {
     } catch (ClosedFileSystemException expected) {
     }
   }
+  @Test
+  public void testDummyMethods() throws IOException{
+	  SystemJimfsFileSystemProvider a = new SystemJimfsFileSystemProvider();
+	  Path file = fs.getPath("/file");
+	  assertNull(a.DummygetFileAttributeView(file, null, null));
+	  assertNull(a.DummygetFileStore(file));
+	  assertNull(a.DummynewByteChannel(file, null, null));
+	  assertNull(a.DummynewDirectoryStream(file, null));
+	  assertNull(a.DummyreadAttributesA(file, null, null));
+	  assertNull(a.DummyreadAttributes(file, "test", null));
+	  try {
+		  a.DummyisHidden(file);
+	  }catch (UnsupportedOperationException e) {
+		  
+	  }
+	  try {
+		  a.DummyisSameFile(file, file);
+	  }catch (UnsupportedOperationException e) {
+		  
+	  }
+	  //Can't test void method without mocking
+//	  a.DummycheckAccess(file, null);
+//	  a.Dummycopy(file, null, null);
+//	  a.DummycreateDirectory(file, null);
+//	  a.Dummydelete(file);
+//	  a.Dummymove(file, null, null);
+//	  a.DummysetAttribute(file, "test", a, null);
+  }
 }
